@@ -1,0 +1,132 @@
+/*
+ * Copyright (c) $year, HAPPL Developer Group. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is a framework for developing JAVA based solutions through Spring Framework (Spring Boot).
+ * This code may be used for any projects, but may not be suitable and makes no warranty.
+ *
+ * This code is publicly available and can be used with any solution.
+ * However, HAPPL Developer Group is not responsible for any problems arising from duplication, modification
+ * and redistribution of this code.
+ *
+ * If you have any questions regarding the reproduction, modification, redistribution or use of this code,
+ * please contact us via the contact details below.
+ *
+ * @url https://velog.io/@ysjee141
+ * @author JI YOONSEONG
+ * @email ysjee141@gmail.com
+ */
+
+buildscript {
+    ext {
+        springBootVersion = '2.2.5.RELEASE'
+    }
+
+    repositories {
+        maven { url 'http://nexus.polarium.tech:15050/nexus/content/repositories/central/' }
+        maven { url 'http://nexus.polarium.tech:15050/nexus/content/repositories/thirdparty/' }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE"
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'checkstyle'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+    apply plugin: 'checkstyle'
+
+    group = 'kr.co.happlcom'
+    sourceCompatibility = '11'
+
+    bootJar.enabled(false)
+    jar.enabled(true)
+
+    tasks.withType(Jar) {
+        destinationDirectory = file("$rootDir/dist")
+    }
+
+    repositories {
+        maven { url 'http://nexus.polarium.tech:15050/nexus/content/repositories/central/' }
+        maven { url 'http://nexus.polarium.tech:15050/nexus/content/repositories/thirdparty/' }
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-quartz'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-aop'
+        implementation 'org.springframework.session:spring-session-core'
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+        testImplementation('org.springframework.security:spring-security-test') {
+            exclude module: 'junit'
+        }
+
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop
+
+
+
+        testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
+        testCompile('org.junit.jupiter:junit-jupiter-params:5.2.0')
+        testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+        // https://mvnrepository.com/artifact/org.jmock/jmock-junit5
+        testCompile group: 'org.jmock', name: 'jmock-junit5', version: '2.12.0'
+        testCompile  'org.projectlombok:lombok'
+        testAnnotationProcessor  'org.projectlombok:lombok'
+
+        // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+        compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+
+        // https://mvnrepository.com/artifact/org.jasypt/jasypt
+        compile group: 'org.jasypt', name: 'jasypt', version: '1.9.3'
+
+        // https://mvnrepository.com/artifact/joda-time/joda-time
+        compile group: 'joda-time', name: 'joda-time', version: '2.10.6'
+
+        // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+        compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker'
+
+        // https://mvnrepository.com/artifact/org.reflections/reflections
+        compile group: 'org.reflections', name: 'reflections', version: '0.9.12'
+
+        // https://mvnrepository.com/artifact/com.google.code.findbugs/annotations
+        compile group: 'com.google.code.findbugs', name: 'annotations', version: '3.0.1'
+
+        // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+        compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+
+        compile 'org.springframework.boot:spring-boot-starter-webflux'
+        compile 'io.projectreactor:reactor-test'
+
+    }
+}
+
+project(':data') {
+    dependencies {
+        implementation project(':common')
+    }
+}
