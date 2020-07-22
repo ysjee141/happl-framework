@@ -54,9 +54,14 @@ subprojects {
 
     group = 'kr.co.happlcom'
     sourceCompatibility = '11'
+    version = "0.0.1"
 
     bootJar.enabled(false)
-    jar.enabled(true)
+    jar {
+        enabled = true
+        archivesBaseName = "happl-framework-" + getArchiveBaseName().get()
+        System.out.println(getArchiveVersion().get())
+    }
 
     tasks.withType(Jar) {
         destinationDirectory = file("$rootDir/dist")

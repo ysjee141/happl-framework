@@ -37,19 +37,18 @@ class PBETest {
 
 	static Stream<Arguments> textStreams() {
 		return Stream.of(
-				Arguments.of("OriginText", "3iI25V+EucOQsV4mduGiin3qu4bGJ5lX"),
-				Arguments.of("홍길동", "UZVo8Qrnvg+jFfrla2D34q/mdEOm71wH"),
-				Arguments.of("1234567890", "/ACSsPSNSDq0lLw7KY1iywpPc92AQql6"),
-				Arguments.of("!@#$%^&*()", "mIM7/1z28JEOwLc3vc9k8k08csrw81ry")
+				Arguments.of("OriginText", "W0oAnBrI8Shn8TVFg1LED3QY2cgGptTq"),
+				Arguments.of("홍길동", "uKB7STgOq9gxNNQ9CyXHy05pRd76Ir94"),
+				Arguments.of("1234567890", "xEk4ELwRQfn49m6Jw97RyaKpqh1Ym0nm"),
+				Arguments.of("!@#$%^&*()", "OOLJNlBfBwf80hSqquHkgByS+M/Fa21Z")
 		);
 	}
 
 	@ParameterizedTest(name = "{0} 을 암호화")
 	@MethodSource("textStreams")
-	void encode(String originText) throws NoSuchAlgorithmException {
-		String encryptedText = PBE.encode(originText, password);
-		encryptedText = PBE.decode(encryptedText, password);
-		assertEquals( originText, encryptedText);
+	void encode(String originText, String encrypted) throws NoSuchAlgorithmException {
+		String decryptedText = PBE.decode(encrypted, password);
+		assertEquals( originText, decryptedText);
 	}
 
 	@ParameterizedTest(name = "{1} 을 복호화")
